@@ -1,0 +1,44 @@
+Titanic survival prediction source code:-
+
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+import numpy as np
+
+x_survived_ID = [[101], [102], [103], [104], [105]]
+y_survived_or_not = [1, 1, 1, 0, 0]  # 0 = not survived and 1= survived
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(x_survived_ID, y_survived_or_not, test_size=0.2, random_state=42)
+
+# Model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+print("Predictions:", y_pred)
+
+# Accuracy
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Bar graph: Actual vs Predicted
+labels = [str(x[0]) for x in X_test]  # Passenger IDs in test set
+x = np.arange(len(labels))  # label locations
+width = 0.35  # width of the bars
+
+fig, ax = plt.subplots()
+rects1 = ax.bar(x - width/2, y_test, width, label='Actual')
+rects2 = ax.bar(x + width/2, y_pred, width, label='Predicted')
+
+# Add labels, title, and legend
+ax.set_ylabel('Survived (1) / Not Survived (0)')
+ax.set_xlabel('Passenger ID')
+ax.set_title('Actual vs Predicted Survival')
+ax.set_xticks(x)
+ax.set_xticklabels(labels)
+ax.legend()
+
+plt.show()
